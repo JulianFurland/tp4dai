@@ -6,6 +6,7 @@ const svc = new ProvinceService();
 router.get('', async (req, res) => {
     let respuesta;
     const returnArray = await svc.getAllAsync();
+    console.log("a");
     if (returnArray != null) {
         respuesta = res.status(200).json(returnArray);
     } else {
@@ -14,9 +15,10 @@ router.get('', async (req, res) => {
     return respuesta;
 });
 
-router.get('/id:', async (req, res0)=>{
+router.get('/:id', async (req, res)=>{
     let respuesta;
-    const returnObj = await svc.getByIDAsync(id);
+    const returnObj = await svc.getByIDAsync(req.params.id);
+    console.log("b");
     if (returnObj != null) {
         respuesta = res.status(200).json(returnObj);
     } else {

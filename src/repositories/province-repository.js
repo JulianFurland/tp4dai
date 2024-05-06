@@ -23,8 +23,9 @@ export default class ProvinceRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM provinces WHERE id = @pId`;
-            const result = await client.request().input('pId', sql.Int, id).query(sql);
+            const sql = `SELECT * FROM provinces WHERE id=$1`;
+            let values = [id];
+            const result = await client.query(sql,values);
             await client.end();
             returnObj = result.rows;
         } catch (error) {
