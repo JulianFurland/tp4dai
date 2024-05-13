@@ -4,27 +4,33 @@ const router = Router();
 const svc = new ProvinceService();
 
 router.get('', async (req, res) => {
-    let respuesta;
     const returnArray = await svc.getAllAsync();
     console.log("a");
     if (returnArray != null) {
-        respuesta = res.status(200).json(returnArray);
+        res.status(200).json(returnArray);
     } else {
-        respuesta = res.status(500).send(`Error Interno`);
+        res.status(500).send(`Error Interno`);
     }
-    return respuesta;
 });
 
 router.get('/:id', async (req, res)=>{
-    let respuesta;
     const returnObj = await svc.getByIDAsync(req.params.id);
     console.log("b");
     if (returnObj != null) {
-        respuesta = res.status(200).json(returnObj);
+        res.status(200).json(returnObj);
     } else {
-        respuesta = res.status(500).send(`Error Interno`);
+        res.status(404).send(`Error Interno`);
     }
-    return respuesta;
+
+});
+
+router.post('', async(req,res)=>{
+    const province = req.body;
+    if (await svc.postProvince(province)) {
+        res.status(200);
+    } else {
+        res.status(400).send(`Error Interno`);
+    }
 });
 
 export default router;

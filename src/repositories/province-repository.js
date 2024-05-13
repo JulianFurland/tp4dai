@@ -34,4 +34,21 @@ export default class ProvinceRepository{
         return returnObj;
     }
 
+    postProvince = async (province) => {
+        let boolReturn;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `INSERT INTO provinces (name, full_name, latitude, longitude) VALUES ($1, $2, $3, $4)`;
+            let values = [province.name,province.fullname,province.latitude,province.longitude];
+            const result = await client.query(sql,values);
+            await client.end();
+            boolReturn = result.rowsAffected == 1;
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
+
 }
