@@ -15,14 +15,26 @@ export default class ProvinceService{
     }
 
     postProvince = async (province) => {
-        console.log(province);
         const repo = new ProvinceRepository();
         let result = false;
-        console.log(province.name);
         if(await repo.postProvince(province)){
             result = true;
         }
         return result;
     }
 
+    updateProvince = async (province) => {
+        const repo = new ProvinceRepository();
+        let result = false;
+        if(await repo.updateProvince(province)){
+            result = true;
+        }
+        return result;
+    }
+
+    deleteProvince = async (id) => {
+        const repo = new ProvinceRepository();
+        const returnObj = await repo.deleteProvince(id);
+        return returnObj;
+    }
 }
