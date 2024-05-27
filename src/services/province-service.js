@@ -1,4 +1,5 @@
 import ProvinceRepository from '../repositories/province-repository.js';
+import LocationService from './location-service.js';
 
 export default class ProvinceService{
     getAllAsync = async () => {
@@ -11,6 +12,12 @@ export default class ProvinceService{
     getByIDAsync = async (id) => {
         const repo = new ProvinceRepository();
         const returnObj = await repo.getByIDAsync(id);
+        return returnObj;
+    }
+
+    getLocByIDAsync = async (id) => {
+        const svc = new LocationService();
+        const returnObj = await svc.getByProvAsync(id);
         return returnObj;
     }
 

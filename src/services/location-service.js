@@ -7,4 +7,10 @@ export default class LocationService{
         return returnArray;
         
     }
+
+    getByProvAsync = async (id) => {
+        const repo = new LocationRepository();
+        const returnArray = await repo.getByProvAsync(id);
+        return returnArray;
+    }
 }

@@ -50,5 +50,14 @@ router.delete('/:id', async (req, res)=>{
 
 });
 
+router.get('/:id/locations', async (req, res)=>{
+    const returnObj = await svc.getLocByIDAsync(req.params.id);
+    if (returnObj != null) {
+        res.status(200).json(returnObj);
+    } else {
+        res.status(404).send(`Error Interno`);
+    }
+});
+
 
 export default router;
