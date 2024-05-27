@@ -6,8 +6,8 @@ export default class EventService{
         const repo = new EventRepository();
         const returnArray = await repo.getAllAsync((page-1)*10);
         const catsvc = new CategoryService();
-        returnArray.forEach(element => {
-            let cat = catsvc.getByIDAsync(element.id_event_category);
+        returnArray.forEach(async element => {
+            let cat = await catsvc.getByIDAsync(element.id_event_category);
             element.category = cat;
             console.log(cat)
         });
