@@ -7,4 +7,10 @@ export default class EventCategoryService{
         return returnArray;
         
     }
+
+    getByIDAsync = async (id) => {
+        const repo = new EventCategoryRepository();
+        const returnObj = await repo.getByIDAsync(id);
+        return returnObj;
+    }
 }
