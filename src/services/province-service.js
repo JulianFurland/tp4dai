@@ -6,7 +6,6 @@ export default class ProvinceService{
         const repo = new ProvinceRepository();
         const returnArray = await repo.getAllAsync();
         return returnArray;
-        
     }
 
     getByIDAsync = async (id) => {
