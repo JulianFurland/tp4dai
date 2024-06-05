@@ -12,15 +12,23 @@ export default class EventService{
     searchEventsAsync = async (name, category, startDate, tag) => {
         const repo = new EventRepository()
         const resultados = await repo.searchEventsAsync(name,category,startDate,tag)
-        console.log(resultados);
+        console.log('resultados' +resultados);
         const eventosUnicos = {};
-        resultados.forEach(fila => {
-            const idEvento = fila.id;
-            if (!eventosUnicos[idEvento]) {
-                eventosUnicos[idEvento] = fila;
-            }
-        }); 
+        // if(resultados != null){
+        //     resultados.forEach(event => {
+        //         let encontrado = false;
+        //         let i = 0;
+        //         while(!encontrado){
+                    
+        //         }
+        //     }); 
+        // }
+        console.log(eventosUnicos)
         return eventosUnicos
     }
-    
+    getDetailed = async (id) => {
+        const repo = new EventRepository();
+        const returnArray = await repo.getDetailed(id);
+        return returnArray;
+    }
 }

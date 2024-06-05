@@ -18,20 +18,6 @@ export default class CommonRepository{
         return returnArray;
     }
 
-    getByIdAsync = async (params) => {
-        let returnArray = null;
-        const client = new Client(DBConfig);
-        try {
-            await client.connect();
-            const sql = `SELECT * FROM ${params.table} WHERE id=${params.id}`;
-            const result = await client.query(sql);
-            await client.end();
-            returnArray = result.rows;
-        } catch (error) {
-            console.log(error);
-        }
-        return returnArray;
-    }
 
     getTenAsync = async (params) =>{
         let returnArray = null;
