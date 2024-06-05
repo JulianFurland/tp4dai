@@ -1,16 +1,18 @@
 import ProvinceRepository from '../repositories/province-repository.js';
+import CommonService from './common-service.js';
 import LocationService from './location-service.js';
 
+const table = "provinces"
 export default class ProvinceService{
     getAllAsync = async () => {
-        const repo = new ProvinceRepository();
-        const returnArray = await repo.getAllAsync();
+        const svc = new CommonService();
+        const returnArray = await svc.getAllAsync(table);
         return returnArray;
     }
 
     getByIDAsync = async (id) => {
-        const repo = new ProvinceRepository();
-        const returnObj = await repo.getByIDAsync(id);
+        const svc = new CommonService();
+        const returnObj = await svc.getByIdAsync(id);
         return returnObj;
     }
 

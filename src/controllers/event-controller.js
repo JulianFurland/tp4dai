@@ -12,4 +12,6 @@ router.get('/:page', async (req, res) => {
     }
 });
 
+router.get('')
+
 export default router;

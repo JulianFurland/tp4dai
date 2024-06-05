@@ -1,16 +1,18 @@
 import EventCategoryRepository from '../repositories/event-category-repository.js';
+import CommonService from '../services/common-service.js';
 
+const table = 'Categories'
 export default class EventCategoryService{
     getAllAsync = async () => {
-        const repo = new EventCategoryRepository();
-        const returnArray = await repo.getAllAsync();
+        const svc = new CommonService();
+        const returnArray = await svc.getAllAsync(table);
         return returnArray;
         
     }
 
     getByIDAsync = async (id) => {
-        const repo = new EventCategoryRepository();
-        const returnObj = await repo.getByIDAsync(id);
+        const svc = new CommonService();
+        const returnObj = await svc.getByIdAsync(id, table);
         return returnObj;
     }
 }
