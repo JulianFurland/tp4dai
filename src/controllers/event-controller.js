@@ -12,8 +12,13 @@ router.get('/:page', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
-    const returnArray = await svc.getByParamsAsync(req.query.name, req.query.category, req.query.startDate, req.query.tags)
+router.post('/', async (req, res) => {
+    const returnArray = await svc.searchEventsAsync(req.body.name, req.body.category, req.body.startDate, req.body.tag)
+    if (returnArray != null) {
+        res.status(200).json(returnArray);
+    } else {
+        res.status(500).send(`Error Interno`);
+    }
 })
 
 export default router;

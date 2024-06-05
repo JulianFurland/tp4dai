@@ -9,13 +9,18 @@ export default class EventService{
         const returnArray = await svc.getTenAsync(table,page*10);
         return returnArray;
     }
-    getByParamsAsync = async (name, category, startDate, tag) => {
-        let params = {
-            name: name,
-            category: category,
-            startDate: startDate,
-            tag: tag
-        }
+    searchEventsAsync = async (name, category, startDate, tag) => {
+        const repo = new EventRepository()
+        const resultados = await repo.searchEventsAsync(name,category,startDate,tag)
+        console.log(resultados);
+        const eventosUnicos = {};
+        resultados.forEach(fila => {
+            const idEvento = fila.id;
+            if (!eventosUnicos[idEvento]) {
+                eventosUnicos[idEvento] = fila;
+            }
+        }); 
+        return eventosUnicos
     }
     
 }

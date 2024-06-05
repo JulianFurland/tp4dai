@@ -8,8 +8,7 @@ export default class CommonRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM $1`;
-            let values = [table];
+            const sql = `SELECT * FROM ${table}`;
             const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
@@ -24,9 +23,8 @@ export default class CommonRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM $1 WHERE id=$2`;
-            let values = [params.table, params.id];
-            const result = await client.query(sql,values);
+            const sql = `SELECT * FROM ${params.table} WHERE id=${params.id}`;
+            const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
         } catch (error) {
@@ -40,16 +38,14 @@ export default class CommonRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM $1 ORDER BY id OFFSET $2 LIMIT 10`;
-            let values = [params.table, params.offset];
-            console.log(values);
-            const result = await client.query(sql, values);
+            const sql = `SELECT * FROM ${params.table} ORDER BY id OFFSET ${params.offset} LIMIT 10`;
+            const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
-            console.log(returnArray)
         } catch (error) {
             console.log(error);
         }
         return returnArray;
     }
+
 }
