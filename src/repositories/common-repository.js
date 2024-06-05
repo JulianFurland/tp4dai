@@ -19,7 +19,7 @@ export default class CommonRepository{
         return returnArray;
     }
 
-    getByIDAsync = async (params) => {
+    getByIdAsync = async (params) => {
         let returnArray = null;
         const client = new Client(DBConfig);
         try {
@@ -40,11 +40,13 @@ export default class CommonRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM $2 ORDER BY id OFFSET $1 LIMIT 10`;
-            let values = [params.offset, params.table];
+            const sql = `SELECT * FROM $1 ORDER BY id OFFSET $2 LIMIT 10`;
+            let values = [params.table, params.offset];
+            console.log(values);
             const result = await client.query(sql, values);
             await client.end();
             returnArray = result.rows;
+            console.log(returnArray)
         } catch (error) {
             console.log(error);
         }
