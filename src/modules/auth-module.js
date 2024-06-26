@@ -1,8 +1,13 @@
 import jwt from 'jsonwebtoken';
 const secretKey = 'PolshuCrack';
+const options = {
+    expiresIn: '15m',
+    issuer: 'TLT'
+}
 
-const ObtainAuthToken = (payload, options) =>{
-    return jwt.sign(payload, secretKey, options);
+
+const ObtainAuthToken = async (payload) =>{
+    return await jwt.sign(payload, secretKey, options);
 }
 
 const VerifyAuthToken = async (token) =>{
@@ -11,6 +16,7 @@ const VerifyAuthToken = async (token) =>{
         payload = await jwt.verify(token, secretKey)
     } catch (error) {
         console.log(error);
+        payload = null;
     }
     return payload;
 }
