@@ -34,6 +34,7 @@ export default class ProvinceRepository{
     }
 
     postProvince = async (province) => {
+        console.log('repo')
         let boolReturn = true;
         const client = new Client(DBConfig);
         try {

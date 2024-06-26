@@ -25,7 +25,7 @@ router.get('/:id', async (req, res)=>{
 router.post('', async(req,res)=>{
     const province = req.body;
     if (await svc.postProvince(province)) {
-        res.status(200);
+        res.status(200).send('Subido');
     } else {
         res.status(400).send(`Error Interno`);
     }

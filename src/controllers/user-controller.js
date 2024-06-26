@@ -1,24 +1,54 @@
 import {Router} from 'express';
 import UserService from '../services/user-service.js';
 import authModule from '../modules/auth-module.js';
+import Helper from '../helpers/helpers.js';
 const router = Router();
 const svc = new UserService();
-
+const help = new Helper();
 router.post('/login',  async (req, res) => {
-    let returnObj = svc.getUserAsync(req.body.username, req.body.password)
-    if(returnObj!==null){
-        
+    let returnObj = null
+    let status = null
+    if(!help.validarMail(req.body.username))
+    {
         returnObj = {
-            succes: true,
-            message: "",
-            token: returnObj.token
+            succes: false,
+            message: "El usuario ingresado no es correcto",
+            token: ""
         }
-        res.json(returnObj).status(200)
+        status = 400
     }
+    else{
+    let getUser = await svc.getUserAsync(req.body.username, req.body.password)
+        if(getUser!==null){
+            returnObj = {
+                succes: true,
+                message: "",
+                token: getUser.token
+            }
+            status = 200
+            
+        }
+        else{
+            returnObj = {
+                succes: false,
+                message: "Usuario o clave inválida.",
+                token: ""
+            }
+            status = 401
+        }
+    }
+    res.json(returnObj).status(status)
 });
 
 router.post('/register',  async (req, res) => {
-
+    let insertUser = await svc.insertUserAsync(req.body.name, req.body.lastName, req.body.username, req.body.password)
+    if(insertUser.status == 201){
+        returnObj = {
+            succes: true,
+            message: insertUser.msj,
+        }
+    }
+    res.json(returnObj).status(insertUser.status)
 });
 
 export default router;

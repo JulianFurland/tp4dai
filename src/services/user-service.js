@@ -1,12 +1,13 @@
 import UserRepository from '../repositories/user-repository.js';
-import CommonService from '../services/common-service.js';
+import Helper from '../helpers/helpers.js';
 import authModule from '../modules/auth-module.js';
 
+const helper = new Helper();
 export default class UserService{
     getUserAsync = async (user, password) => {
         const repo = new UserRepository();
         let returnObj = await repo.getUserAsync(user, password);
-        if(returnObj != null) {
+        if(returnObj !== undefined) {
             let payload = {
             username: user,
             password: password
@@ -17,12 +18,19 @@ export default class UserService{
                 token: token
             }
         }
+        else{
+            returnObj = null
+        }
         return returnObj;
     }
 
-    getByIDAsync = async (id) => {
-        const svc = new CommonService();
-        const returnObj = await svc.getByIdAsync(id, table);
-        return returnObj;
+    insertUserAsync= async (name, lastName, user, password) => {
+        const repo = new UserRepository();
+        helper.validarVaciosYMenorTresLetras()
+        if(name)
+        returnBool = await repo.insertUserAsync(name, lastName, user, password);
+        return returnBool;
     }
+
+
 }

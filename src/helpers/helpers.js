@@ -10,11 +10,11 @@ class Helper {
         return valido
     }
 
-    validarSintaxis  = (variable) =>
+    validarMail = (mail) =>
     {
         let valido = false;
         let regExp = /[\w._%+-]+@[\w.-]+\.[\w.]/
-        if(variable.match(regExp))
+        if(mail.match(regExp))
         {
             valido = true;
         }
