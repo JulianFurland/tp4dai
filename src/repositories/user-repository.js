@@ -8,7 +8,7 @@ export default class UserRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM ${table}`;
+            const sql = `SELECT * FROM Users WHERE username = ${user} AND password = ${password}`;
             const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
