@@ -1,9 +1,9 @@
 class Helper {
-    validarVaciosYMenorTresLetras = (variable) =>
+    validarVaciosYMenorTresLetras = (str) =>
     {
         let valido = false;
 
-        if(variable != null  && variable.length > 3)
+        if(str !== null && str !== undefined && str !== ""  && str.length >= 3)
         {
             valido = true;
         }

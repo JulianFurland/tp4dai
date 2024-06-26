@@ -26,10 +26,33 @@ export default class UserService{
 
     insertUserAsync= async (name, lastName, user, password) => {
         const repo = new UserRepository();
-        helper.validarVaciosYMenorTresLetras()
-        if(name)
-        returnBool = await repo.insertUserAsync(name, lastName, user, password);
-        return returnBool;
+        let returnObj = {
+            status: null,
+            msj: null
+        };
+        if(!helper.validarVaciosYMenorTresLetras(name)||!helper.validarVaciosYMenorTresLetras(lastName)){
+            returnObj.status = 400;
+            returnObj.msj = "El nombre/apellido tiene menos de 3 letras."
+        }
+        else if(!helper.validarMail(user)){
+            returnObj.status = 400;
+            returnObj.msj = "Mail invalido";
+        }
+        else if(!helper.validarVaciosYMenorTresLetras(password)){
+            returnObj.status = 400;
+            returnObj.msj = "La contraseña debe ser mayor a 3 caracteres";
+        }
+        else{
+            if(await repo.insertUserAsync(name, lastName, user, password)){
+                returnObj.status = 200;
+                returnObj.msj = "OK";
+            }
+            else{
+                returnObj.status = 500;
+                returnObj.msj = "Error Interno";
+            }
+        }
+        return returnObj;
     }
 
 

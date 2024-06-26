@@ -41,14 +41,8 @@ router.post('/login',  async (req, res) => {
 });
 
 router.post('/register',  async (req, res) => {
-    let insertUser = await svc.insertUserAsync(req.body.name, req.body.lastName, req.body.username, req.body.password)
-    if(insertUser.status == 201){
-        returnObj = {
-            succes: true,
-            message: insertUser.msj,
-        }
-    }
-    res.json(returnObj).status(insertUser.status)
+    let insertUser = await svc.insertUserAsync(req.body.first_name, req.body.last_name, req.body.username, req.body.password)
+    res.send(insertUser.msj).status(insertUser.status)
 });
 
 export default router;

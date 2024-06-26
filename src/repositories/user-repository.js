@@ -8,8 +8,9 @@ export default class UserRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT * FROM Users WHERE username = '${user}' AND password = '${password}'`;
-            const result = await client.query(sql);
+            const sql = `SELECT * FROM Users WHERE username = ($1) AND password = ($2)`;
+            let values = [user, password]
+            const result = await client.query(sql,values);
             await client.end();
             returnArray = result.rows;
         } catch (error) {
@@ -22,9 +23,9 @@ export default class UserRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $40)`;
+            const sql = `INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)`;
             let values = [name, lastName, user, password]
-            const result = await client.query(sql);
+            const result = await client.query(sql,values);
             await client.end();
         } catch (error) {
             boolReturn = false;
