@@ -1,5 +1,6 @@
 import {Router} from 'express';
-import EventService from './../services/event-service.js'
+import EventService from './../services/event-service.js';
+import {VerifAuthTokenMiddleware} from '../middleware/auth-middleware.js';
 const router = Router();
 const svc = new EventService();
 
@@ -38,6 +39,11 @@ router.get('/:id/enrollment', async (req, res) => {
     } else {
         res.status(500).send(`Error Interno`);
     }
+})
+
+router.post('/', VerifAuthTokenMiddleware, async (req,res) => {
+    
+    res.status(200).send(req.user);
 })
 
 export default router;

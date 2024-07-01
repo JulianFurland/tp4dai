@@ -1,33 +1,32 @@
 import authModule from "../modules/auth-module.js";
 
-class AuthMiddleware{
-
-    RemoveBearer = (header) => {
+const RemoveBearer = (header) => {
         let returnValue = header;
         if (header.startsWith('Bearer ')){
             returnValue = header.slice(7);
         }
         return returnValue;
-    }
+};
 
-    VerifAuthTokenMiddleware = async (req, res, next) => {
+const VerifAuthTokenMiddleware = async (req, res, next) => {
+    try {
         let authHeader = req.headers.authorization;
-        let response = null; 
-        if(!authHeader) {
-            response = res.status(401).send('Token Invalido')
+        if (!authHeader) {
+            return res.status(401).send('Token Inválido');
         }
-        else{
-            let payload = await authModule.VerifyAuthToken(RemoveBearer(authHeader));
-            if(payload != null){
-                req.user = payload;
-                next();
-            }
-            else{
-                response = res.status(401).send('Token Invalido');
-            }
+
+        let token = RemoveBearer(authHeader);
+        let payload = await authModule.VerifyAuthToken(token);
+        if (payload) {
+            req.user = payload;
+            next();
+        } else {
+            return res.status(401).send('Token Inválido');
         }
-        return response;
+
+    } catch (err) {
+        console.error('Error en el middleware de verificación de token:', err);
+        return res.status(500).send('Error en el servidor');
     }
-    
-} 
-export default AuthMiddleware;
+};
+export {VerifAuthTokenMiddleware};
