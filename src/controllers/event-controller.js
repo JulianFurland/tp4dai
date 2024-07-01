@@ -42,8 +42,8 @@ router.get('/:id/enrollment', async (req, res) => {
 })
 
 router.post('/', VerifAuthTokenMiddleware, async (req,res) => {
-    
-    res.status(200).send(req.user);
+    const response = svc.createEvent(req.body.name, req.body.description, req.body.id_event_category, req.body.id_event_location, req.body.start_date, req.body.duration_in_minutes, req.body.price, req.body.enabled_for_enrollment, req.body.max_assistance, req.user.id)
+    res.status(response.status).send(response.message);
 })
 
 export default router;

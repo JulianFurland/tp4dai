@@ -21,6 +21,7 @@ export default class UserService{
         else{
             returnObj = null
         }
+        console.log(returnObj);
         return returnObj;
     }
 
