@@ -10,7 +10,8 @@ export default class UserService{
         if(returnObj !== undefined) {
             let payload = {
             username: user,
-            password: password
+            password: password,
+            id: returnObj.id
             }
             let token = await authModule.ObtainAuthToken(payload)
             returnObj = {

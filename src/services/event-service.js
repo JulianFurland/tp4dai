@@ -79,6 +79,12 @@ export default class EventService{
             }
         }
         else{
+            if(boolEnrollment === "true"){
+                boolEnrollment = 1
+            }
+            else{
+                boolEnrollment = 0
+            }
             repo.createEvent(name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator);
             returnObj = {
                 status:200,
