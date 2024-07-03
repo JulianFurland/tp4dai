@@ -12,7 +12,7 @@ router.post('/login',  async (req, res) => {
     if(!help.validarMail(req.body.username))
     {
         returnObj = {
-            succes: false,
+            success: false,
             message: "El usuario ingresado no es correcto",
             token: ""
         }
@@ -22,7 +22,7 @@ router.post('/login',  async (req, res) => {
     let getUser = await svc.getUserAsync(req.body.username, req.body.password)
         if(getUser!==null){
             returnObj = {
-                succes: true,
+                success: true,
                 message: "",
                 token: getUser.token
             }
@@ -31,7 +31,7 @@ router.post('/login',  async (req, res) => {
         }
         else{
             returnObj = {
-                succes: false,
+                success: false,
                 message: "Usuario o clave inválida.",
                 token: ""
             }

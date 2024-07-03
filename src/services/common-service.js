@@ -14,7 +14,7 @@ export default class CommonService{
             table: table
         }
         const repo = new CommonRepository();
-        const returnArray = await repo.getByIdAsync(params);
+        const returnArray = await repo.getByIDAsync(params);
         return returnArray;
     }
 

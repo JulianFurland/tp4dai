@@ -90,12 +90,13 @@ export default class EventRepository{
     }
 
     createEvent = async (name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
-        let returnArray = null;
+        let boolReturn = true;
         const client = new Client(DBConfig);
         try {
             await client.connect();
             const sql = `INSERT INTO events (name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
             let values = [name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator]
+            console.log(values);
             const result = await client.query(sql,values);
             await client.end();
         } catch (error) {

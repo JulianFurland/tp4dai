@@ -1,6 +1,5 @@
 class Helper {
-    validarVaciosYMenorTresLetras = (str) =>
-    {
+    validarVaciosYMenorTresLetras = (str) => {
         let valido = false;
 
         if(str !== null && str !== undefined && str !== ""  && str.length >= 3)
@@ -10,8 +9,7 @@ class Helper {
         return valido
     }
 
-    validarMail = (mail) =>
-    {
+    validarMail = (mail) => {
         let valido = false;
         let regExp = /[\w._%+-]+@[\w.-]+\.[\w.]/
         if(mail.match(regExp))
@@ -21,6 +19,32 @@ class Helper {
         return valido
     }
 
+    validarFecha = (dateStr) => {
+        let result = {
+            successs: false,
+            date: undefined
+        };
+        let dateObj = new Date(dateStr);
+        if (!isNaN(dateObj.getTime())) {
+            result.successs = true;
+            result.date = dateObj;
+        }
+        return result;
+    }
+
+    strToInt = (str) => {
+        let result = {
+            successs: false,
+            intValue: undefined
+        };
+        let intValue = parseInt(str, 10);
+    
+        if (!isNaN(intValue) && Number.isFinite(intValue)) {
+            result.successs = true;
+            result.intValue = intValue;
+        }
+        return result;
+    }
 }
 
 export default Helper;
