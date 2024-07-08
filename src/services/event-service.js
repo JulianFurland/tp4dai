@@ -103,4 +103,111 @@ export default class EventService{
         }
         return returnObj;
     }
+
+    updateEvent = async (id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
+        const helper = new Helper();
+        const usersvc = new UserService();
+        const repo = new EventRepository();
+        const commonsvc = new CommonService();
+        const categoryObj = helper.strToInt(category);
+        category = categoryObj.intValue;
+        const locationObj = helper.strToInt(location);
+        location = locationObj.intValue;
+        const durationObj = helper.strToInt(duration);
+        duration = durationObj.intValue;
+        const priceObj = helper.strToInt(price);
+        price = priceObj.intValue;
+        const maxAssistanceObj = helper.strToInt(maxAssistance);
+        maxAssistance = maxAssistanceObj.intValue;
+        const intformat = (categoryObj.successs&&locationObj.successs&&durationObj.successs&&priceObj.successs&&maxAssistanceObj.successs);
+        let returnObj = {
+            status:500,
+            message: "",
+        }
+        try {
+        let idCreatorUser = repo.selectEvent(id);
+        if(idCreatorUser == idCreator){
+            returnObj = {
+                status:404,
+                message: "El evento no existe o no pertenece al usuario",
+            }
+        }
+        else if(!helper.validarVaciosYMenorTresLetras(name) || !helper.validarVaciosYMenorTresLetras(description)) {
+            returnObj = {
+                status:400,
+                message: "El nombre y descripción deben ser de 3 o más caracteres",
+            }
+        }
+        else if(maxAssistance > commonsvc.getByIdAsync(location, 'event_locations').max_capacity){
+            returnObj = {
+                status:400,
+                message: "La máxima capacidad del evento excede la de la locación",
+            }
+        }
+        else if(price < 0 || duration < 0){
+            returnObj = {
+                status:400,
+                message: "La duración y precio del evento deben ser mayores o iguales a 0",
+            }
+        }
+        else if(!helper.validarFecha(startDate).successs){
+            returnObj = {
+                status:400,
+                message: "La fecha es invalida",
+            }
+        }
+        else if(!intformat){
+            returnObj = {
+                status:400,
+                message: "No se respetaron los tipos",
+            }
+        }
+        else{
+            if(boolEnrollment === "true"){
+                boolEnrollment = 1
+            }
+            else{
+                boolEnrollment = 0
+            }
+            repo.updateEvent(id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator);
+            returnObj = {
+                status:200,
+                message: "Evento Actualizado",
+            };
+        }
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
+    deleteEvent = async (id) => {
+        const helper = new Helper();
+        const usersvc = new UserService();
+        const repo = new EventRepository();
+        let returnObj = {
+            status:500,
+            message: "",
+        }
+        try {
+        let idCreatorUser = repo.selectEnrollmentEvent(id);
+        if(idCreatorUser == idCreator){
+            returnObj = {
+                status:404,
+                message: "El evento no existe o no pertenece al usuario",
+            }
+        }
+        
+        else{
+            repo.deleteEvent(id);
+            returnObj = {
+                status:200,
+                message: "Evento Actualizado",
+            }
+        }
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
 }

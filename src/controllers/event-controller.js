@@ -46,4 +46,14 @@ router.post('/', VerifAuthTokenMiddleware, async (req,res) => {
     res.status((await response).status).send((await response).message); 
 })
 
+router.put('/', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.updateEvent(req.body.id, req.body.name, req.body.description, req.body.id_event_category, req.body.id_event_location, req.body.start_date, req.body.duration_in_minutes, req.body.price, req.body.enabled_for_enrollment, req.body.max_assistance, req.user.id)
+    res.status((await response).status).send((await response).message);
+})
+
+router.delete('/', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.deleteEvent(req.body.id)
+    res.status((await response).status).send((await response).message);
+})
+
 export default router;
