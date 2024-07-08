@@ -105,4 +105,66 @@ export default class EventRepository{
         }
         return boolReturn;
     }
+    
+    selectidUserCreatorEvent = async (id) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT id_creator_user FROM events WHERE id = id`;
+            const result = await client.query(sql);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    } 
+
+    selectEnrollmentEvent = async (id) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT id_user FROM event_enrrolments WHERE id_event = id`;
+            const result = await client.query(sql);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
+    updateEvent= async (id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `UPDATE events SET name = $2, description = $3, id_event_category = $4, id_event_location = $5, start_date = $6, duration_in_minutes = $7, price = $8, enabled_for_enrollment = $9, max_assistance = $10, id_creator_user = $11 WHERE id = $1`;
+            let values = [id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator]
+            console.log(values);
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
+
+    deleteEvent= async (id) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `DELETE FROM events WHERE id = id`;
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
 }
