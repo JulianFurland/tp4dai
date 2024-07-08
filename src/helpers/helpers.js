@@ -1,7 +1,6 @@
 class Helper {
     validarVaciosYMenorTresLetras = (str) => {
         let valido = false;
-
         if(str !== null && str !== undefined && str !== ""  && str.length >= 3)
         {
             valido = true;
@@ -34,13 +33,13 @@ class Helper {
 
     strToInt = (str) => {
         let result = {
-            successs: false,
+            success: false,
             intValue: undefined
         };
         let intValue = parseInt(str, 10);
     
         if (!isNaN(intValue) && Number.isFinite(intValue)) {
-            result.successs = true;
+            result.success = true;
             result.intValue = intValue;
         }
         return result;

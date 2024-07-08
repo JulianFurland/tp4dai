@@ -41,7 +41,7 @@ export default class EventService{
         price = priceObj.intValue;
         const maxAssistanceObj = helper.strToInt(maxAssistance);
         maxAssistance = maxAssistanceObj.intValue;
-        const intformat = (categoryObj.successs&&locationObj.successs&&durationObj.successs&&priceObj.successs&&maxAssistanceObj.successs);
+        const intformat = (categoryObj.success&&locationObj.success&&durationObj.success&&priceObj.success&&maxAssistanceObj.success);
         let returnObj = {
             status:500,
             message: "",
@@ -66,7 +66,7 @@ export default class EventService{
                 message: "La duración y precio del evento deben ser mayores o iguales a 0",
             }
         }
-        else if(!helper.validarFecha(startDate).successs){
+        else if(!helper.validarFecha(startDate).success){
             returnObj = {
                 status:400,
                 message: "La fecha es invalida",
@@ -85,11 +85,18 @@ export default class EventService{
             else{
                 boolEnrollment = 0
             }
-            repo.createEvent(name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator);
-            returnObj = {
-                status:200,
-                message: "Evento Creado",
-            };
+            if(repo.createEvent(name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator)){
+                returnObj = {
+                    status: 201,
+                    message: "Evento Creado",
+                };
+            }
+            else {
+                returnObj = {
+                    status: 500,
+                    message: "Error Interno",
+                };
+            }
         }
         } catch (error) {
             console.log(error);
