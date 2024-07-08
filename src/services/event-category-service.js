@@ -67,4 +67,83 @@ export default class EventCategoryService{
         }
         return returnObj;
     }
+
+    updateCategory = async (id, name, displayOrder) => {
+        const helper = new Helper();
+        const repo = new EventCategoryRepository();
+        const commonsvc = new CommonService();
+        let returnObj = {
+            status:500,
+            message: "",
+        };
+        let catFound = await commonsvc.getByIdAsync(id, table);
+        catFound = catFound[0] !== undefined;
+        const displayOrderObj = helper.strToInt(displayOrder);
+        displayOrder = displayOrderObj.intValue;
+        try {
+            if(!helper.validarVaciosYMenorTresLetras(name)) {
+                returnObj = {
+                    status:400,
+                    message: "El nombre debe ser de 3 o más caracteres",
+                }
+            }
+            else if((!displayOrderObj.success) || displayOrder%10 !== 0){
+                returnObj = {
+                    status: 400,
+                    message: "Display Order inválido. El valor debe ser un múltiplo de 10",
+                };
+            }
+            else if(!catFound){
+                returnObj = {
+                    status: 404,
+                    message: "Categoria no encontrada",
+                };
+            }
+            else {
+                if(repo.updateCategory(id, name, displayOrder)){
+                    returnObj = {
+                        status: 200,
+                        message: "Categoria Actualizada",
+                    };
+                }
+                else {
+                    returnObj = {
+                        status: 500,
+                        message: "Error Interno",
+                    };
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
+    deleteCategory = async (id) => {
+        const commonsvc = new CommonService();
+        let catFound = await commonsvc.getByIdAsync(id, table);
+        catFound = catFound[0] !== undefined;
+        let returnObj = {
+            status:500,
+            message: "",
+        }
+        try {
+            if(!catFound){
+                returnObj = {
+                    status: 404,
+                    message: "Categoria no encontrada",
+                };
+            }
+            else{
+                commonsvc.delete(id, table);
+                returnObj = {
+                    status:200,
+                    message: "Categoria Eliminada",
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
 }

@@ -27,4 +27,14 @@ export default class CommonService{
         const returnArray = await repo.getTenAsync(params);
         return returnArray;
     }
+
+    delete = async (id, table) => {
+        let params = {
+            id: id,
+            table: table
+        }
+        const repo = new CommonRepository();
+        const success = await repo.delete(params);
+        return success;
+    }
 }

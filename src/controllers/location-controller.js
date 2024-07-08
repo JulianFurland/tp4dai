@@ -12,4 +12,10 @@ router.get('', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    const returnObj = await svc.getByIDAsync(req.params.id);
+    res.status(returnObj.status).json(returnObj.data);
+});
+
+
 export default router;

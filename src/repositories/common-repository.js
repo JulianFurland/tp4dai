@@ -47,5 +47,20 @@ export default class CommonRepository{
         }
         return returnArray;
     }
-
+    
+    delete = async (params) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `DELETE FROM ${params.table} WHERE id = $1`;
+            const values = [params.id]
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
 }

@@ -152,19 +152,4 @@ export default class EventRepository{
         }
         return boolReturn;
     }
-
-    deleteEvent= async (id) => {
-        let boolReturn = true;
-        const client = new Client(DBConfig);
-        try {
-            await client.connect();
-            const sql = `DELETE FROM events WHERE id = id`;
-            const result = await client.query(sql,values);
-            await client.end();
-        } catch (error) {
-            boolReturn = false;
-            console.log(error);
-        }
-        return boolReturn;
-    }
 }

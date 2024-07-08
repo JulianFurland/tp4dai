@@ -9,9 +9,25 @@ export default class LocationService{
         return returnArray;
     }
 
-    getByProvAsync = async (id) => {
-        const repo = new LocationRepository();
-        const returnArray = await repo.getByProvAsync(id);
-        return returnArray;
+    getByIDAsync = async (id) => {
+        const svc = new CommonService();
+        let returnObj = {
+            status:500,
+            data: null,
+        };
+        const data = await svc.getByIdAsync(id, table);
+        if(data[0] === undefined){
+            returnObj = {
+                status:404,
+                data: "Not Found",
+            };
+        }
+        else {
+            returnObj = {
+                status: 200,
+                data: data,
+            };
+        }
+        return returnObj;
     }
 }

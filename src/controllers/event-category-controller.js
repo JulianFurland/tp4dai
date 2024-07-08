@@ -22,4 +22,14 @@ router.post('/', async (req,res) => {
     res.status((await response).status).send((await response).message); 
 })
 
+router.put('/', async (req,res) => {
+    const response = svc.updateCategory(req.body.id, req.body.name, req.body.displayOrder)
+    res.status((await response).status).send((await response).message); 
+})
+
+router.delete('/:id', async (req,res) => {
+    const response = svc.deleteCategory(req.params.id)
+    res.status((await response).status).send((await response).message);
+})
+
 export default router;

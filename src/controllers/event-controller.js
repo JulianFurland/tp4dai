@@ -52,7 +52,7 @@ router.put('/', VerifAuthTokenMiddleware, async (req,res) => {
 })
 
 router.delete('/', VerifAuthTokenMiddleware, async (req,res) => {
-    const response = svc.deleteEvent(req.body.id)
+    const response = svc.deleteEvent(req.params.id)
     res.status((await response).status).send((await response).message);
 })
 
