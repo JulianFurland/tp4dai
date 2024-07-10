@@ -193,6 +193,20 @@ export default class EventRepository{
     }
 
     rateEvent = async (enrollmentID, rating, observation) => {
-        
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        let date = new Date();
+        try {
+            await client.connect();
+            const sql = `UPDATE event_enrollments SET observations=$1, rating=$2 WHERE id = $3`;
+            let values = [observation, rating, enrollmentID]
+            console.log(values)
+            const result = await client.query(sql, values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
     }
 }

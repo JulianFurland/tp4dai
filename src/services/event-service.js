@@ -253,7 +253,7 @@ export default class EventService{
                     message: "el evento no esta habilitado",
                 }
             }
-            else if(!(enrollmentsvc.selectEnrollment(id, idUser))){
+            else if(enrollmentsvc.selectEnrollment(id, idUser)){
                 returnObj = {
                     status:400,
                     message: "el usuario ya esta registrado",
@@ -325,7 +325,7 @@ export default class EventService{
         return returnObj;
     }
 
-    rateEvent = async (eventID, raiting, observations, userID) => {
+    rateEvent = async (eventID, rating, observations, userID) => {
         const commonsvc = new CommonService();
         const enrollmentsvc = new EventEnrollmentService();
         const helper = new Helper();
@@ -334,11 +334,11 @@ export default class EventService{
             status: 500,
             message: "Error Interno",
         }
-        const raitingObj = helper.strToInt(raiting);
-        raiting = raitingObj.intValue;
+        const raitingObj = helper.strToInt(rating);
+        rating = raitingObj.intValue;
         const fechaHoy = new Date();
-        const event = await commonsvc.getByIdAsync(eventID,table);
-        const enrollment = await enrollmentsvc.selectEnrollment(eventID,userID);
+        var event = await commonsvc.getByIdAsync(eventID,table);
+        var enrollment = await enrollmentsvc.selectEnrollment(eventID,userID);
         if(!enrollment) {
             returnObj = {
                 status: 404,
@@ -351,14 +351,21 @@ export default class EventService{
                 message: "El evento no comenzó todavía",
             }
         }
-        else if(!raitingObj.success || raiting > 10 || raiting < 1){
+        else if(!raitingObj.success || rating > 10 || rating < 1){
             returnObj = {
                 status: 404,
                 message: "El rating debe ser un entero entre 1 y 10",
             }
         }
         else {
-            repo.rateEvent()
+            enrollment = enrollment[0];
+            console.log(JSON.stringify(enrollment))
+            if(repo.rateEvent(enrollment.id, rating, observations)){
+                returnObj = {
+                    status: 200,
+                    message: "Evento Puntuado",
+                }
+            }
         }
         return returnObj;
     }
