@@ -7,4 +7,10 @@ export default class EventEnrollmentService{
         const returnArray = await repo.selectEnrollmentEvent(id);
         return returnArray;
     }
+
+    selectEnrollment = async (id, idUser) => {
+        const repo = new EventEnrollmentRepository();
+        const returnArray = await repo.selectEnrollment(id, idUser);
+        return returnArray;
+    }
 }

@@ -17,4 +17,20 @@ export default class EventEnrollmentRepository{
         }
         return returnObj;
     }
+
+    selectEnrollment = async (id, idUser) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT id_user FROM event_enrollments WHERE id_event = $1 AND id_user = $2`;
+            let values = [id, idUser];
+            const result = await client.query(sql, values);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
 }

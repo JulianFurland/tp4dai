@@ -23,7 +23,6 @@ const VerifAuthTokenMiddleware = async (req, res, next) => {
         } else {
             return res.status(401).send('Token Inválido');
         }
-
     } catch (err) {
         console.error('Error en el middleware de verificación de token:', err);
         return res.status(500).send('Error en el servidor');

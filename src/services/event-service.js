@@ -197,8 +197,6 @@ export default class EventService{
         let idCreatorUser = await repo.selectidUserCreatorEvent(id);
         let enrollment = await enrollmentsvc.selectEnrollmentEvent(id);
         if(idCreatorUser[0].id_creator_user !== idCreator){
-            console.log(idCreatorUser)
-            console.log(idCreator)
             returnObj = {
                 status:404,
                 message: "El evento no existe o no pertenece al usuario",
@@ -217,6 +215,58 @@ export default class EventService{
                 message: "Evento Eliminado",
             }
         }
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
+    createEnrollment = async (id, idUser) => {
+        const repo = new EventRepository();
+        const enrollmentsvc = new EventEnrollmentService();
+        let returnObj = {
+            status:500,
+            message: "",
+        }
+        let fecha = new Date();
+        let startDate = await repo.selectAsistanceYDateYenable(id).start_date;
+        let maxAssistance = await repo.selectAsistanceYDateYenable(id).max_assistance;
+        let enabled = await repo.selectAsistanceYDateYenable(id).enabled_for_enrollment;
+        try {
+            if(!(maxAssistance >= maxAssistance + 1)){
+                console.log(maxAssistance)
+                console.log(startDate)
+                returnObj = {
+                    status:400,
+                    message: "el evento ya no tiene espacio",
+                }
+            }
+            else if(startDate < fecha){
+                returnObj = {
+                    status:400,
+                    message: "el evento ya pasó",
+                }
+            }
+            else if(!enabled){
+                returnObj = {
+                    status:400,
+                    message: "el evento no esta habilitado",
+                }
+            }
+            else if(enrollmentsvc.selectEnrollment(id, idUser)){
+                returnObj = {
+                    status:400,
+                    message: "el usuario ya esta registrado",
+                }
+            }
+            else{
+                repo.createEnrollment(id);
+                returnObj = {
+                    status:201,
+                    message: "Enrollment creado",
+                }
+            }
+            
         } catch (error) {
             console.log(error);
         }

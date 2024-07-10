@@ -123,13 +123,47 @@ export default class EventRepository{
     } 
 
 
-    updateEvent= async (id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
+    updateEvent = async (id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
         let boolReturn = true;
         const client = new Client(DBConfig);
         try {
             await client.connect();
             const sql = `UPDATE events SET name = $2, description = $3, id_event_category = $4, id_event_location = $5, start_date = $6, duration_in_minutes = $7, price = $8, enabled_for_enrollment = $9, max_assistance = $10, id_creator_user = $11 WHERE id = $1`;
             let values = [id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator]
+            console.log(values);
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
+
+    selectAsistanceYDateYenable = async (id) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT max_assistance, start_date, enabled_for_enrollment FROM events WHERE id = $1`;
+            let values = [id];
+            const result = await client.query(sql, values);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    } 
+
+    createEnrollment = async (id, idUser) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        let date = new Date();
+        try {
+            await client.connect();
+            const sql = `INSERT INTO event_enrollment (id_event, id_user, description, registration_date_time, attended, observations, rating) VALUES ()`;
+            let values = [id, idUser, "", date, 0, "", 0]
             console.log(values);
             const result = await client.query(sql,values);
             await client.end();
