@@ -162,10 +162,10 @@ export default class EventRepository{
         let date = new Date();
         try {
             await client.connect();
-            const sql = `INSERT INTO event_enrollment (id_event, id_user, description, registration_date_time, attended, observations, rating) VALUES ()`;
+            const sql = `INSERT INTO event_enrollments (id_event, id_user, description, registration_date_time, attended, observations, rating) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
             let values = [id, idUser, "", date, 0, "", 0]
             console.log(values);
-            const result = await client.query(sql,values);
+            const result = await client.query(sql, values);
             await client.end();
         } catch (error) {
             boolReturn = false;
@@ -174,5 +174,21 @@ export default class EventRepository{
         return boolReturn;
     }
 
-
+    deleteEnrollment = async (id, idUser) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        let date = new Date();
+        try {
+            await client.connect();
+            const sql = ``;
+            let values = [id, idUser, "", date, 0, "", 0]
+            console.log(values);
+            const result = await client.query(sql, values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
 }

@@ -13,4 +13,10 @@ export default class EventEnrollmentService{
         const returnArray = await repo.selectEnrollment(id, idUser);
         return returnArray;
     }
+
+    countEnrollment = async (id) => {
+        const repo = new EventEnrollmentRepository();
+        const returnArray = await repo.countEnrollment(id);
+        return returnArray;
+    }
 }

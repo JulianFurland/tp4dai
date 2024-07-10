@@ -56,9 +56,13 @@ router.delete('/:id', VerifAuthTokenMiddleware, async (req,res) => {
 })
 
 router.post('/:id/enrollment', VerifAuthTokenMiddleware, async (req,res) => {
-    console.log("aaaaaaaaaaaaaaaaaa")
     const response = svc.createEnrollment(req.params.id, req.user.id)
     res.status((await response).status).send((await response).message); 
+})
+
+router.delete('/:id/enrollment', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.deleteEnrollment(req.params.id, req.user.id)
+    res.status((await response).status).send((await response).message);
 })
 
 export default router;

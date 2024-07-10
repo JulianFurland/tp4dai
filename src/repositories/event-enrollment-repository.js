@@ -33,4 +33,20 @@ export default class EventEnrollmentRepository{
         }
         return returnObj;
     }
+
+    countEnrollment = async (id) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT COUNT(*) FROM event_enrollments WHERE id_event = $1`;
+            let values = [id];
+            const result = await client.query(sql, values);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
 }
