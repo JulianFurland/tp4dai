@@ -15,7 +15,6 @@ router.get('/:page', async (req, res) => {
 
 router.get('/', async (req, res) => {
     const returnArray = await svc.searchEventsAsync(req.query.name, req.query.category, req.query.startDate, req.query.tag)
-    console.log(returnArray)
     if (returnArray != null) {
         res.status(200).json(returnArray);
     } else {

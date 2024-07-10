@@ -35,7 +35,6 @@ export default class CommonService{
             userID: userID,
             table: table,
         }
-        console.log(JSON.stringify(params))
         const repo = new CommonRepository();
         const returnArray = await repo.getByUserAsync(params);
         return returnArray;
