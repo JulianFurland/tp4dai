@@ -197,8 +197,6 @@ export default class EventService{
         let idCreatorUser = await repo.selectidUserCreatorEvent(id);
         let enrollment = await enrollmentsvc.selectEnrollmentEvent(id);
         if(idCreatorUser[0].id_creator_user !== idCreator){
-            console.log(idCreatorUser)
-            console.log(idCreator)
             returnObj = {
                 status:404,
                 message: "El evento no existe o no pertenece al usuario",

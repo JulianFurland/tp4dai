@@ -19,4 +19,37 @@ export default class EventLocationRepository{
         }
         return returnArray;
     }
+
+    createEventLocation = async (idLocation, name, fullAddress, maxCapacity, latitude, longitude, idUser) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `INSERT INTO event_locations (id_location, name, full_address, max_capacity, latitude, longitude, id_creator_user) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+            let values = [idLocation, name, fullAddress, maxCapacity, latitude, longitude, idUser]
+            console.log(values);
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
+
+    updateEventLocation = async (idLocation, name, fullAddress, maxCapacity, latitude, longitude, idUser, id) => {
+        let boolReturn = true;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `UPDATE event_locations SET id_location = $1, name = $2, full_address = $3, max_capacity = $4, latitude = $5, longitude = $6, id_creator_user = $7 WHERE id = $8`;
+            let values = [idLocation, name, fullAddress, maxCapacity, latitude, longitude, idUser, id]
+            const result = await client.query(sql,values);
+            await client.end();
+        } catch (error) {
+            boolReturn = false;
+            console.log(error);
+        }
+        return boolReturn;
+    }
 }

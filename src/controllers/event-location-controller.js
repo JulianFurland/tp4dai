@@ -23,8 +23,18 @@ router.get('/:id', VerifAuthTokenMiddleware, async (req, res) => {
 });
 
 router.post('/', VerifAuthTokenMiddleware, async (req,res) => {
-    const response = svc.createEventLocation(req.body.id_location, req.body.name, req.body.full_address, req.body.max_capacity, req.body.latitude, req.body.longitude, req.user.id)
+    const response = svc.createOrUpdateEventLocation(null, req.body.id_location, req.body.name, req.body.full_address, req.body.max_capacity, req.body.latitude, req.body.longitude, req.user.id, "create")
     res.status((await response).status).send((await response).message); 
+})
+
+router.put('/', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.createOrUpdateEventLocation(req.body.id, req.body.id_location, req.body.name, req.body.full_address, req.body.max_capacity, req.body.latitude, req.body.longitude, req.user.id, "update")
+    res.status((await response).status).send((await response).message); 
+})
+
+router.delete('/:id', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.deleteEventLocation(req.params.id, req.user.id)
+    res.status((await response).status).send((await response).message);
 })
 
 export default router;
