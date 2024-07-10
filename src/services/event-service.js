@@ -207,10 +207,10 @@ export default class EventService{
             }
         }
         else{
-            commonsvc.delete(id, "events");
+            repo.deleteEnrollment(id, "events");
             returnObj = {
                 status:200,
-                message: "Evento Eliminado",
+                message: "enrollment Eliminado",
             }
         }
         } catch (error) {
@@ -274,49 +274,33 @@ export default class EventService{
 
     deleteEnrollment = async (id, idUser) => {
         const repo = new EventRepository();
-        const helper = new Helper();
-        const enrollmentsvc = new EventEnrollmentService();
         const commonsvc = new CommonService();
+        const enrollmentsvc = new EventEnrollmentService();
         let returnObj = {
             status:500,
             message: "",
         }
         let fecha = new Date();
-        let evento = (await (commonsvc.getByIdAsync(id, "events")))[0];
-        let startDate = evento.start_date;
-        let maxAssistance = evento.max_assistance;
-        let actualAssistance = (await enrollmentsvc.countEnrollment(id))[0].count;
-        let enabled = evento.enabled_for_enrollment;
+        let idCreatorUser = await enrollmentsvc.selectEnrollment(id, idUser);
+        let startDate = (await (commonsvc.getByIdAsync(id, "events")))[0].start_date;
         try {
-            if(!(maxAssistance >= actualAssistance + 1)){
+            if(!(await enrollmentsvc.selectEnrollment(id, idUser))){
                 returnObj = {
                     status:400,
-                    message: "el evento ya no tiene espacio",
+                    message: "El usuario no esta registrado en el evento",
                 }
             }
-            else if(!(startDate < fecha)){
+            else if(startDate > fecha){
                 returnObj = {
                     status:400,
                     message: "el evento ya pasó",
-                }
-            }
-            else if(!enabled){
-                returnObj = {
-                    status:400,
-                    message: "el evento no esta habilitado",
-                }
-            }
-            else if(!(enrollmentsvc.selectEnrollment(id, idUser))){
-                returnObj = {
-                    status:400,
-                    message: "el usuario ya esta registrado",
                 }
             }
             else{
                 repo.deleteEnrollment(id, idUser);
                 returnObj = {
                     status:201,
-                    message: "Enrollment creado",
+                    message: "Enrollment eliminado",
                 }
             }
         } catch (error) {

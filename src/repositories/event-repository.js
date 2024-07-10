@@ -175,21 +175,19 @@ export default class EventRepository{
     }
 
     deleteEnrollment = async (id, idUser) => {
-        let boolReturn = true;
+        let returnObj = null;
         const client = new Client(DBConfig);
-        let date = new Date();
         try {
             await client.connect();
-            const sql = ``;
-            let values = [id, idUser, "", date, 0, "", 0]
-            console.log(values);
+            const sql = `DELETE FROM event_enrollments WHERE id_event = $1 AND id_user = $2`;
+            let values = [id, idUser];
             const result = await client.query(sql, values);
             await client.end();
+            returnObj = result.rows;
         } catch (error) {
-            boolReturn = false;
             console.log(error);
         }
-        return boolReturn;
+        return returnObj;
     }
 
     rateEvent = async (enrollmentID, rating, observation) => {

@@ -60,6 +60,11 @@ router.post('/:id/enrollment', VerifAuthTokenMiddleware, async (req,res) => {
     res.status((await response).status).send((await response).message); 
 })
 
+router.delete('/:id/enrollment', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.deleteEnrollment(req.params.id, req.user.id)
+    res.status((await response).status).send((await response).message);
+})
+
 router.patch('/:id/enrollment/:raiting', VerifAuthTokenMiddleware, async (req, res) => {
     const response = svc.rateEvent(req.params.id, req.params.raiting, req.body.observations, req.user.id)
     res.status((await response).status).send((await response).message); 
