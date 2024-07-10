@@ -3,8 +3,6 @@ import CategoryService from './event-category-service.js';
 import CommonService from './common-service.js';
 import Helper from '../helpers/helpers.js';
 import UserService from './user-service.js';
-import CommonRepository from '../repositories/common-repository.js';
-import EventEnrollmentRepository from '../repositories/event-enrollment-repository.js';
 import EventEnrollmentService from './event-enrollment-service.js';
 
 const table = "events"
@@ -269,6 +267,44 @@ export default class EventService{
             
         } catch (error) {
             console.log(error);
+        }
+        return returnObj;
+    }
+
+    rateEvent = async (eventID, raiting, observations, userID) => {
+        const commonsvc = new CommonService();
+        const enrollmentsvc = new EventEnrollmentService();
+        const helper = new Helper();
+        const repo = new EventRepository();
+        let returnObj = {
+            status: 500,
+            message: "Error Interno",
+        }
+        const raitingObj = helper.strToInt(raiting);
+        raiting = raitingObj.intValue;
+        const fechaHoy = new Date();
+        const event = await commonsvc.getByIdAsync(eventID,table);
+        const enrollment = await enrollmentsvc.selectEnrollment(eventID,userID);
+        if(!enrollment) {
+            returnObj = {
+                status: 404,
+                message: "El usuario no se encuentra registrado al evento",
+            }
+        }
+        else if(event[0].start_date > fechaHoy){
+            returnObj = {
+                status: 404,
+                message: "El evento no comenzó todavía",
+            }
+        }
+        else if(!raitingObj.success || raiting > 10 || raiting < 1){
+            returnObj = {
+                status: 404,
+                message: "El rating debe ser un entero entre 1 y 10",
+            }
+        }
+        else {
+            repo.rateEvent()
         }
         return returnObj;
     }

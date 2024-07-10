@@ -174,5 +174,8 @@ export default class EventRepository{
         return boolReturn;
     }
 
+    rateEvent = async (enrollmentID, rating, observation) => {
+        
+    }
 
 }
