@@ -1,4 +1,5 @@
 import LocationRepository from '../repositories/location-repository.js';
+import EventLocationService from './event-location-service.js';
 import CommonService from './common-service.js';
 
 const table = "locations"
@@ -16,10 +17,10 @@ export default class LocationService{
             data: null,
         };
         const data = await svc.getByIdAsync(id, table);
-        if(data[0] === undefined){
+        if(data == null || data[0] == null){
             returnObj = {
                 status:404,
-                data: "Not Found",
+                data: null,
             };
         }
         else {
@@ -27,6 +28,28 @@ export default class LocationService{
                 status: 200,
                 data: data,
             };
+        }
+        return returnObj;
+    }
+
+    getEventLocationByIDAsync = async (idLocation, idUser) => {
+        let returnObj = {
+            status:500,
+            data: null,
+        };
+        if((await this.getByIDAsync(idLocation)).data) {
+            const svc = new EventLocationService();
+            const data = await svc.getByLocationIDandUserID(idLocation,idUser);
+            returnObj = {
+                status: 200,
+                data: data,
+            }
+        }
+        else {
+            returnObj = {
+                status: 404,
+                data: null,
+            }
         }
         return returnObj;
     }
