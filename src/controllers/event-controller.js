@@ -51,9 +51,9 @@ router.put('/', VerifAuthTokenMiddleware, async (req,res) => {
     res.status((await response).status).send((await response).message);
 })
 
-router.delete('/', VerifAuthTokenMiddleware, async (req,res) => {
-    const response = svc.deleteEvent(req.params.id)
+router.delete('/:id', VerifAuthTokenMiddleware, async (req,res) => {
+    const response = svc.deleteEvent(req.params.id, req.user.id)
     res.status((await response).status).send((await response).message);
-})
+})  
 
 export default router;

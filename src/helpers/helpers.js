@@ -20,12 +20,12 @@ class Helper {
 
     validarFecha = (dateStr) => {
         let result = {
-            successs: false,
+            success: false,
             date: undefined
         };
         let dateObj = new Date(dateStr);
         if (!isNaN(dateObj.getTime())) {
-            result.successs = true;
+            result.success = true;
             result.date = dateObj;
         }
         return result;

@@ -3,6 +3,9 @@ import CategoryService from './event-category-service.js';
 import CommonService from './common-service.js';
 import Helper from '../helpers/helpers.js';
 import UserService from './user-service.js';
+import CommonRepository from '../repositories/common-repository.js';
+import EventEnrollmentRepository from '../repositories/event-enrollment-repository.js';
+import EventEnrollmentService from './event-enrollment-service.js';
 
 const table = "events"
 export default class EventService{
@@ -119,13 +122,13 @@ export default class EventService{
         price = priceObj.intValue;
         const maxAssistanceObj = helper.strToInt(maxAssistance);
         maxAssistance = maxAssistanceObj.intValue;
-        const intformat = (categoryObj.successs&&locationObj.successs&&durationObj.successs&&priceObj.successs&&maxAssistanceObj.successs);
+        const intformat = (categoryObj.success&&locationObj.success&&durationObj.success&&priceObj.success&&maxAssistanceObj.success);
         let returnObj = {
             status:500,
             message: "",
         }
         try {
-        let idCreatorUser = repo.selectEvent(id);
+        let idCreatorUser = repo.selectidUserCreatorEvent(id);
         if(idCreatorUser == idCreator){
             returnObj = {
                 status:404,
@@ -150,7 +153,7 @@ export default class EventService{
                 message: "La duración y precio del evento deben ser mayores o iguales a 0",
             }
         }
-        else if(!helper.validarFecha(startDate).successs){
+        else if(!helper.validarFecha(startDate).success){
             returnObj = {
                 status:400,
                 message: "La fecha es invalida",
@@ -181,28 +184,37 @@ export default class EventService{
         return returnObj;
     }
 
-    deleteEvent = async (id) => {
+    deleteEvent = async (id, idCreator) => {
         const helper = new Helper();
-        const usersvc = new UserService();
+        const commonsvc = new CommonService();
+        const enrollmentsvc = new EventEnrollmentService();
         const repo = new EventRepository();
         let returnObj = {
             status:500,
             message: "",
         }
         try {
-        let idCreatorUser = repo.selectEnrollmentEvent(id);
-        if(idCreatorUser == idCreator){
+        let idCreatorUser = await repo.selectidUserCreatorEvent(id);
+        let enrollment = await enrollmentsvc.selectEnrollmentEvent(id);
+        if(idCreatorUser[0].id_creator_user !== idCreator){
+            console.log(idCreatorUser)
+            console.log(idCreator)
             returnObj = {
                 status:404,
                 message: "El evento no existe o no pertenece al usuario",
             }
         }
-        
+        else if(enrollment[0]){
+            returnObj = {
+                status:404,
+                message: "Hay alguien ya inscripto en el evento",
+            }
+        }
         else{
-            repo.deleteEvent(id);
+            commonsvc.delete(id, "events");
             returnObj = {
                 status:200,
-                message: "Evento Actualizado",
+                message: "Evento Eliminado",
             }
         }
         } catch (error) {

@@ -111,8 +111,9 @@ export default class EventRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            const sql = `SELECT id_creator_user FROM events WHERE id = id`;
-            const result = await client.query(sql);
+            const sql = `SELECT id_creator_user FROM events WHERE id = $1`;
+            let values = [id];
+            const result = await client.query(sql, values);
             await client.end();
             returnObj = result.rows;
         } catch (error) {
@@ -121,20 +122,6 @@ export default class EventRepository{
         return returnObj;
     } 
 
-    selectEnrollmentEvent = async (id) => {
-        let returnObj = null;
-        const client = new Client(DBConfig);
-        try {
-            await client.connect();
-            const sql = `SELECT id_user FROM event_enrrolments WHERE id_event = id`;
-            const result = await client.query(sql);
-            await client.end();
-            returnObj = result.rows;
-        } catch (error) {
-            console.log(error);
-        }
-        return returnObj;
-    }
 
     updateEvent= async (id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator) => {
         let boolReturn = true;
@@ -152,4 +139,6 @@ export default class EventRepository{
         }
         return boolReturn;
     }
+
+
 }
