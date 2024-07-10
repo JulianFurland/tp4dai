@@ -33,6 +33,38 @@ export default class CommonRepository{
         return returnObj;
     }
 
+    getByIDAndUserAsync = async (params) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT * FROM ${params.table} WHERE id = $1 AND id_creator_user = $2`;
+            const values = [params.id, params.userID];
+            const result = await client.query(sql, values);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
+    getByUserAsync = async (params) => {
+        let returnObj = null;
+        const client = new Client(DBConfig);
+        try {
+            await client.connect();
+            const sql = `SELECT * FROM ${params.table} WHERE id_creator_user = $1`;
+            const values = [params.userID];
+            const result = await client.query(sql, values);
+            await client.end();
+            returnObj = result.rows;
+        } catch (error) {
+            console.log(error);
+        }
+        return returnObj;
+    }
+
     getTenAsync = async (params) =>{
         let returnArray = null;
         const client = new Client(DBConfig);

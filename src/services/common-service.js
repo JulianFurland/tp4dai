@@ -1,3 +1,4 @@
+import { json } from 'express';
 import CommonRepository from '../repositories/common-repository.js';
 
 export default class CommonService{
@@ -15,6 +16,28 @@ export default class CommonService{
         }
         const repo = new CommonRepository();
         const returnArray = await repo.getByIDAsync(params);
+        return returnArray;
+    }
+
+    getByIdAndUserAsync = async (id, userID, table) => {
+        let params = {
+            id: id,
+            userID: userID,
+            table: table,
+        }
+        const repo = new CommonRepository();
+        const returnArray = await repo.getByIDAndUserAsync(params);
+        return returnArray;
+    }
+
+    getByUserAsync = async (userID, table) => {
+        let params = {
+            userID: userID,
+            table: table,
+        }
+        console.log(JSON.stringify(params))
+        const repo = new CommonRepository();
+        const returnArray = await repo.getByUserAsync(params);
         return returnArray;
     }
 
