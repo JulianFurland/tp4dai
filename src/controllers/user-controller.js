@@ -7,6 +7,7 @@ const svc = new UserService();
 const help = new Helper();
 
 router.post('/login',  async (req, res) => {
+    console.log(req.body)
     let returnObj = null
     let status = null
     if(!help.validarMail(req.body.username))

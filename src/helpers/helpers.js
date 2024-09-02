@@ -10,7 +10,7 @@ class Helper {
 
     validarMail = (mail) => {
         let valido = false;
-        let regExp = /[\w._%+-]+@[\w.-]+\.[\w.]/
+        let regExp = /[\w._%+-]+@[\w.-]+\.[\w.]/;
         if(mail.match(regExp))
         {
             valido = true;
