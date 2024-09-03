@@ -44,7 +44,7 @@ router.post('/login',  async (req, res) => {
 
 router.post('/register',  async (req, res) => {
     let insertUser = await svc.insertUserAsync(req.body.first_name, req.body.last_name, req.body.username, req.body.password)
-    res.send(insertUser.msj).status(insertUser.status)
+    res.send(insertUser).status(insertUser.status)
 });
 
 export default router;
