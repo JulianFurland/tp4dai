@@ -12,7 +12,7 @@ const VerifAuthTokenMiddleware = async (req, res, next) => {
     try {
         let authHeader = req.headers.authorization;
         if (!authHeader) {
-            return res.status(401).send('Token Inválido');
+            return res.status(401).send({code: 'Token Inválido'});
         }
 
         let token = RemoveBearer(authHeader);
@@ -21,7 +21,7 @@ const VerifAuthTokenMiddleware = async (req, res, next) => {
             req.user = payload;
             next();
         } else {
-            return res.status(401).send('Token Inválido');
+            return res.status(401).send({code: 'Token Inválido'});
         }
     } catch (err) {
         console.error('Error en el middleware de verificación de token:', err);
