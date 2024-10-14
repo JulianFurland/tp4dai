@@ -5,7 +5,7 @@ const router = Router();
 const svc = new EventLocationService();
 
 router.get('', VerifAuthTokenMiddleware, async (req, res) => {
-    const returnArray = await svc.getAllAsync(req.user.id);
+    const returnArray = await svc.getAllAsync();
     if (returnArray != null) {
         res.status(200).json(returnArray);
     } else {

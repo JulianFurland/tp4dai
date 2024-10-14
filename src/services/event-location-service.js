@@ -5,11 +5,10 @@ import LocationService from './location-service.js';
 
 const table = "event_locations"
 export default class EventLocationService {
-    getAllAsync = async (userID) => {
+    getAllAsync = async () => {
         const svc = new CommonService();
-        const returnArray = await svc.getByUserAsync(userID, table);
+        const returnArray = await svc.getAllAsync(table);
         return returnArray;
-        
     }
 
     getByLocationIDandUserID = async (locationID, userID) => {

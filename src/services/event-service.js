@@ -7,6 +7,11 @@ import EventEnrollmentService from './event-enrollment-service.js';
 
 const table = "events"
 export default class EventService{
+    getAllAsync = async () => {
+        const svc = new CommonService();
+        const returnArray = await svc.getAllAsync(table);
+        return returnArray;
+    }
     getTenAsync = async (page) => {
         const svc = new CommonService();
         const returnArray = await svc.getTenAsync(table,page*10);
