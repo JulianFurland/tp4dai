@@ -38,7 +38,6 @@ export default class EventRepository{
         const client = new Client(DBConfig);
         try {
             await client.connect();
-            console.log(id)
             const sql = `select * from events
             inner join users on events.id_creator_user = users.id
             inner join event_tags on events.id = event_tags.id_event
@@ -82,7 +81,6 @@ export default class EventRepository{
             const result = await client.query(sql);
             await client.end();
             returnArray = result.rows;
-            console.log(returnArray)
         } catch (error) {
             console.log(error);
         }
@@ -96,7 +94,6 @@ export default class EventRepository{
             await client.connect();
             const sql = `INSERT INTO events (name, description, id_event_category, id_event_location, start_date, duration_in_minutes, price, enabled_for_enrollment, max_assistance, id_creator_user) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
             let values = [name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator]
-            console.log(values);
             const result = await client.query(sql,values);
             await client.end();
         } catch (error) {
@@ -130,7 +127,6 @@ export default class EventRepository{
             await client.connect();
             const sql = `UPDATE events SET name = $2, description = $3, id_event_category = $4, id_event_location = $5, start_date = $6, duration_in_minutes = $7, price = $8, enabled_for_enrollment = $9, max_assistance = $10, id_creator_user = $11 WHERE id = $1`;
             let values = [id, name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator]
-            console.log(values);
             const result = await client.query(sql,values);
             await client.end();
         } catch (error) {
@@ -164,7 +160,6 @@ export default class EventRepository{
             await client.connect();
             const sql = `INSERT INTO event_enrollments (id_event, id_user, description, registration_date_time, attended, observations, rating) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
             let values = [id, idUser, "", date, 0, "", 0]
-            console.log(values);
             const result = await client.query(sql, values);
             await client.end();
         } catch (error) {
@@ -198,7 +193,6 @@ export default class EventRepository{
             await client.connect();
             const sql = `UPDATE event_enrollments SET observations=$1, rating=$2 WHERE id = $3`;
             let values = [observation, rating, enrollmentID]
-            console.log(values)
             const result = await client.query(sql, values);
             await client.end();
         } catch (error) {

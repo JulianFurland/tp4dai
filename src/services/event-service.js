@@ -233,12 +233,13 @@ export default class EventService{
             status:500,
             message: "",
         }
-        let fecha = new Date();
+        let fecha = Date.now();
         let evento = (await (commonsvc.getByIdAsync(id, "events")))[0];
         let startDate = evento.start_date;
         let maxAssistance = evento.max_assistance;
         let actualAssistance = (await enrollmentsvc.countEnrollment(id))[0].count;
         let enabled = evento.enabled_for_enrollment;
+        console.log(await enrollmentsvc.selectEnrollment(id, idUser))
         try {
             if(!(maxAssistance >= actualAssistance + 1)){
                 returnObj = {
@@ -246,7 +247,7 @@ export default class EventService{
                     message: "el evento ya no tiene espacio",
                 }
             }
-            else if(!(startDate < fecha)){
+            else if((startDate.toLocaleDateString() >= fecha)){
                 returnObj = {
                     status:400,
                     message: "el evento ya pasó",
@@ -258,7 +259,7 @@ export default class EventService{
                     message: "el evento no esta habilitado",
                 }
             }
-            else if(enrollmentsvc.selectEnrollment(id, idUser)){
+            else if((await enrollmentsvc.selectEnrollment(id, idUser)).length > 0){
                 returnObj = {
                     status:400,
                     message: "el usuario ya esta registrado",
@@ -348,7 +349,6 @@ export default class EventService{
         }
         else {
             enrollment = enrollment[0];
-            console.log(JSON.stringify(enrollment))
             if(repo.rateEvent(enrollment.id, rating, observations)){
                 returnObj = {
                     status: 200,

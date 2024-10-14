@@ -74,7 +74,6 @@ export default class EventLocationService {
                     }
                 }
                 else if (mode === "update"){
-                    console.log(await this.getByEventLocationIDandUserID(idEvent_location, idUser)[0])
                     if (!((await this.getByEventLocationIDandUserID(idEvent_location, idUser))[0])){
                         returnObj = {
                             status: 404,
