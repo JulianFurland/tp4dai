@@ -169,7 +169,7 @@ export default class EventService{
             }
         }
         else{
-            if(boolEnrollment === "true"){
+            if(boolEnrollment){
                 boolEnrollment = 1
             }
             else{
