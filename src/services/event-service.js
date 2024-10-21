@@ -315,6 +315,13 @@ export default class EventService{
         return returnObj;
     }
 
+    getAllEnrollmentByEventIdAsync = async (id) => 
+    {
+        const repo = new EventRepository();
+        const returnArray = await repo.getAllEnrollmentByEventIdAsync(id);
+        return returnArray;
+    }
+
     rateEvent = async (eventID, rating, observations, userID) => {
         const commonsvc = new CommonService();
         const enrollmentsvc = new EventEnrollmentService();
