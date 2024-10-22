@@ -50,42 +50,42 @@ export default class EventService{
         const intformat = (categoryObj.success&&locationObj.success&&durationObj.success&&priceObj.success&&maxAssistanceObj.success);
         let returnObj = {
             status:500,
-            message: "",
+            message: {message: ""},
         }
         try {
 
         if(!helper.validarVaciosYMenorTresLetras(name) || !helper.validarVaciosYMenorTresLetras(description)) {
             returnObj = {
                 status:400,
-                message: "El nombre y descripción deben ser de 3 o más caracteres",
+                message:{message: "El nombre y descripción deben ser de 3 o más caracteres"},
             }
         }
         else if(maxAssistance > commonsvc.getByIdAsync(location, 'event_locations').max_capacity){
             returnObj = {
                 status:400,
-                message: "La máxima capacidad del evento excede la de la locación",
+                message: {message: "La máxima capacidad del evento excede la de la locación"},
             }
         }
         else if(price < 0 || duration < 0){
             returnObj = {
                 status:400,
-                message: "La duración y precio del evento deben ser mayores o iguales a 0",
+                message: {message:"La duración y precio del evento deben ser mayores o iguales a 0"},
             }
         }
         else if(!helper.validarFecha(startDate).success){
             returnObj = {
                 status:400,
-                message: "La fecha es invalida",
+                message: {message: "La fecha es invalida"},
             }
         }
         else if(!intformat){
             returnObj = {
                 status:400,
-                message: "No se respetaron los tipos",
+                message: {message: "No se respetaron los tipos"},
             }
         }
         else{
-            if(boolEnrollment === "true"){
+            if(boolEnrollment){
                 boolEnrollment = 1
             }
             else{
@@ -94,13 +94,13 @@ export default class EventService{
             if(repo.createEvent(name, description, category, location, startDate, duration, price, boolEnrollment, maxAssistance, idCreator)){
                 returnObj = {
                     status: 201,
-                    message: "Evento Creado",
+                    message: {message: "Evento Creado"},
                 };
             }
             else {
                 returnObj = {
                     status: 500,
-                    message: "Error Interno",
+                    message: {message:"Error Interno"},
                 };
             }
         }
@@ -188,7 +188,6 @@ export default class EventService{
     }
 
     deleteEvent = async (id, idCreator) => {
-        const helper = new Helper();
         const commonsvc = new CommonService();
         const enrollmentsvc = new EventEnrollmentService();
         const repo = new EventRepository();
@@ -202,20 +201,20 @@ export default class EventService{
         if(idCreatorUser[0].id_creator_user !== idCreator){
             returnObj = {
                 status:404,
-                message: "El evento no existe o no pertenece al usuario",
+                message: {message: "El evento no existe o no pertenece al usuario"},
             }
         }
         else if(enrollment[0]){
             returnObj = {
                 status:404,
-                message: "Hay alguien ya inscripto en el evento",
+                message: {message: "Hay alguien ya inscripto en el evento"},
             }
         }
         else{
-            repo.deleteEnrollment(id, "events");
+            commonsvc.delete(id, "events");
             returnObj = {
                 status:200,
-                message: "enrollment Eliminado",
+                message: {message: "Evento Eliminado"},
             }
         }
         } catch (error) {

@@ -135,7 +135,7 @@ export default class EventRepository{
         }
         return boolReturn;
     }
-
+    
     selectAsistanceYDateYenable = async (id) => {
         let returnObj = null;
         const client = new Client(DBConfig);
