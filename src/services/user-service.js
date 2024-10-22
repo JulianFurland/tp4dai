@@ -1,6 +1,7 @@
 import UserRepository from '../repositories/user-repository.js';
 import Helper from '../helpers/helpers.js';
 import authModule from '../modules/auth-module.js';
+import CommonService from './common-service.js';
 
 const helper = new Helper();
 export default class UserService{
@@ -21,6 +22,29 @@ export default class UserService{
         }
         else{
             returnObj = null
+        }
+        return returnObj;
+    }
+
+    getUserByIdAsync = async (id) => {
+        const common = new CommonService();
+        let returnObj = {
+            status: null,
+            msj: null
+        };
+        const user = (await common.getByIdAsync(id, 'users'))[0];
+        if(user){
+            returnObj.status = 200;
+            returnObj.msj = "Usuario Encontrado";
+            returnObj.data = {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                username: user.username,
+            };
+        }
+        else {
+            returnObj.status = 404;
+            returnObj.msj = "Usuario No Encontrado";
         }
         return returnObj;
     }

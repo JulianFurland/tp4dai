@@ -72,7 +72,7 @@ router.get('/:id/enrollment', async (req, res) => {
     }
 })
 
-router.get('/:id/enrollments/', async (req, res) =>
+router.get('/:id/enrollments', async (req, res) =>
 {
     const idEvento = req.params.id
     let respuesta;

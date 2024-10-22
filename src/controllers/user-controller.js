@@ -46,4 +46,9 @@ router.post('/register',  async (req, res) => {
     res.send(insertUser).status(insertUser.status)
 });
 
+router.get('/:id', async (req, res) =>{
+    let result = await svc.getUserByIdAsync(req.params.id)
+    res.status(result.status).json(result.data)
+});
+
 export default router;
